@@ -1,0 +1,3 @@
+[submodule "defer.bash"]
+	path = defer.bash
+	url = git@github.com:pseudocc/defer.bash.git
