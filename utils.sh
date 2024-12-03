@@ -263,7 +263,7 @@ _log() {
     func="${FUNCNAME[$depth]}->$func"
   done
 
-  >&2 echo -e "$(fg "$PRIMARY")${func:-root}$(reset) $*"
+  >&2 echo -e "$(fg "$CYAN")${func:-root}$(fg "$PRIMARY")$(reset) $*"
 }
 
 debug() {
