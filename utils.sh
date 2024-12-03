@@ -236,8 +236,10 @@ log_level() {
     "INFO") echo 1 ;;
     "WARN") echo 2 ;;
     "ERROR") echo 3 ;;
+    "PANIC") echo 4 ;;
     *)
       >&2 echo "log_level: invalid log level \"$1\""
+      echo -1
       return 1
   esac
 }
@@ -249,7 +251,7 @@ _log() {
   fi
   >&2 echo -en "$(bg "$PRIMARY")$(fg "$SECONDARY") $(printf "%-5s" "$LEVEL") $(reset) "
   case ${FUNCNAME[1]} in
-    debug|info|warn|error) depth=2 ;;
+    debug|info|warn|error|panic) depth=2 ;;
     *) depth=1 ;;
   esac
 
@@ -279,6 +281,15 @@ warn() {
 error() {
   LEVEL="ERROR" PRIMARY=$RED SECONDARY=$BLACK _log "$*"
 }
+
+export PANIC_CODE=6
+
+panic() {
+  LEVEL="PANIC" PRIMARY=$((BLACK+BRIGHT)) SECONDARY=$RED _log "$*"
+  exit $PANIC_CODE
+}
+
+alias unreachable="panic 'unreachable code reached'"
 
 join() {
   local IFS=$1
